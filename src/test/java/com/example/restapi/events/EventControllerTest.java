@@ -13,6 +13,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -55,6 +56,8 @@ public class EventControllerTest {
 		)
 			.andDo(print())
 			.andExpect(status().isCreated())
-			.andExpect(jsonPath("id").exists());
+			.andExpect(jsonPath("id").exists())
+			.andExpect(header().exists(HttpHeaders.LOCATION))
+			.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE));
 	}
 }
