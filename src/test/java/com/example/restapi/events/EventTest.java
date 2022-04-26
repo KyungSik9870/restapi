@@ -3,6 +3,8 @@ package com.example.restapi.events;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 class EventTest {
 
@@ -15,55 +17,34 @@ class EventTest {
 		assertThat(event).isNotNull();
 	}
 
-
-	@Test
-	void testFree() {
+	@ParameterizedTest
+	@CsvSource(value = {"0:0:true", "100:0:false"}, delimiter = ':')
+	void testFree(int basePrice, int maxPrice, boolean isFree) {
 		// given
 		Event event = Event.builder()
-			.basePrice(0)
-			.maxPrice(0)
+			.basePrice(basePrice)
+			.maxPrice(maxPrice)
 			.build();
 
 		// when
 		event.update();
 
 		// then
-		assertThat(event.isFree()).isTrue();
-
-		// given
-		event = Event.builder()
-			.basePrice(100)
-			.maxPrice(0)
-			.build();
-
-		// when
-		event.update();
-
-		// then
-		assertThat(event.isFree()).isFalse();
+		assertThat(event.isFree()).isEqualTo(isFree);
 	}
 
-	@Test
-	void testOffLine() {
+	@ParameterizedTest
+	@CsvSource(value = {"location:true", "'':false"}, delimiter = ':')
+	void testOffLine(String location, boolean isOffLine) {
 		// given
 		Event event = Event.builder()
-			.location("location")
+			.location(location)
 			.build();
 
 		// when
 		event.update();
 
 		// then
-		assertThat(event.isOffline()).isTrue();
-
-		// given
-		event = Event.builder()
-			.build();
-
-		// when
-		event.update();
-
-		// then
-		assertThat(event.isOffline()).isFalse();
+		assertThat(event.isOffline()).isEqualTo(isOffLine);
 	}
 }
