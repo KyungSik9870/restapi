@@ -1,5 +1,6 @@
 package com.example.restapi.events;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -69,7 +70,7 @@ public class EventControllerTest {
 			.beginEnrollmentDateTime(LocalDateTime.of(2022, 4, 26, 0, 0))
 			.closeEnrollmentDateTime(LocalDateTime.of(2022, 4, 30, 0, 0))
 			.beginEventDateTime(LocalDateTime.of(2022, 4, 26, 0, 0))
-			.endEventDateTime(LocalDateTime.of(2022, 4, 29, 0, 0))
+			.endEventDateTime(LocalDateTime.of(2022, 4, 30, 0, 0))
 			.basePrice(100)
 			.maxPrice(200)
 			.limitOfEnrollment(100)

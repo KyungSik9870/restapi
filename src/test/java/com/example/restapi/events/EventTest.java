@@ -14,4 +14,56 @@ class EventTest {
 			.build();
 		assertThat(event).isNotNull();
 	}
+
+
+	@Test
+	void testFree() {
+		// given
+		Event event = Event.builder()
+			.basePrice(0)
+			.maxPrice(0)
+			.build();
+
+		// when
+		event.update();
+
+		// then
+		assertThat(event.isFree()).isTrue();
+
+		// given
+		event = Event.builder()
+			.basePrice(100)
+			.maxPrice(0)
+			.build();
+
+		// when
+		event.update();
+
+		// then
+		assertThat(event.isFree()).isFalse();
+	}
+
+	@Test
+	void testOffLine() {
+		// given
+		Event event = Event.builder()
+			.location("location")
+			.build();
+
+		// when
+		event.update();
+
+		// then
+		assertThat(event.isOffline()).isTrue();
+
+		// given
+		event = Event.builder()
+			.build();
+
+		// when
+		event.update();
+
+		// then
+		assertThat(event.isOffline()).isFalse();
+	}
 }
