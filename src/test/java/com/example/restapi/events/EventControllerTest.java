@@ -88,8 +88,11 @@ public class EventControllerTest {
 			.andExpect(header().exists(HttpHeaders.LOCATION))
 			.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
 			.andExpect(jsonPath("id").value(Matchers.not(1L)))
-			.andExpect(jsonPath("free").value(Matchers.not(true)))
-			.andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT)));
+			.andExpect(jsonPath("free").value(false))
+			.andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT)))
+			.andExpect(jsonPath("_links.self").exists())
+			.andExpect(jsonPath("_links.query-events").exists())
+			.andExpect(jsonPath("_links.update-event").exists());
 	}
 
 	@DisplayName("EventDto 에 빈값일때 bad request")
