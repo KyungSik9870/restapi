@@ -9,9 +9,21 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
+    }
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
     }
 }
 
@@ -34,27 +46,26 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 }
 
-tasks.named('test') {
+test {
     useJUnitPlatform()
-}
-
-ext {
-    snippetsDir = file('build/generated-snippets')
+    outputs.dir snippetsDir
 }
 
 asciidoctor {
-    dependsOn test
     inputs.dir snippetsDir
+    dependsOn test
 }
 
 asciidoctor.doFirst {
     delete file('src/main/resources/static/docs')
 }
 
-bootJar {
+task copyDocument(type: Copy) {
     dependsOn asciidoctor
-    copy {
-        from "${asciidoctor.outputDir}"
-        into 'BOOT-INF/classes/static/docs'
-    }
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+}
+
+build {
+    dependsOn copyDocument
 }

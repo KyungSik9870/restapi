@@ -1,6 +1,9 @@
 package com.example.restapi.events;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -67,7 +70,55 @@ public class EventControllerTest {
 			.andExpect(jsonPath("_links.self").exists())
 			.andExpect(jsonPath("_links.query-events").exists())
 			.andExpect(jsonPath("_links.update-event").exists())
-			.andDo(document("create-event"));
+			.andExpect(jsonPath("_links.profile").exists())
+			.andDo(document("create-event",
+				links(
+					linkWithRel("self").description("link to self"),
+					linkWithRel("query-events").description("link to query events"),
+					linkWithRel("update-event").description("link to update an event"),
+					linkWithRel("profile").description("link to profile")
+				),
+				requestHeaders(
+					headerWithName(HttpHeaders.ACCEPT).description("accept header"),
+					headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+				),
+				requestFields(
+					fieldWithPath("name").description("Name of new event"),
+					fieldWithPath("description").description("Description of new event"),
+					fieldWithPath("beginEnrollmentDateTime").description("BeginEnrollmentDateTime of new event"),
+					fieldWithPath("closeEnrollmentDateTime").description("CloseEnrollmentDateTime of new event"),
+					fieldWithPath("beginEventDateTime").description("BeginEventDateTime of new event"),
+					fieldWithPath("endEventDateTime").description("EndEventDateTime of new event"),
+					fieldWithPath("location").description("Location of new event"),
+					fieldWithPath("basePrice").description("Base Price of new event"),
+					fieldWithPath("maxPrice").description("Max Price of new event"),
+					fieldWithPath("limitOfEnrollment").description("Limit of Enrollment of new event")
+				),
+				responseHeaders(
+					headerWithName(HttpHeaders.LOCATION).description("location of response header"),
+					headerWithName(HttpHeaders.CONTENT_TYPE).description("content type of response header")
+				),
+				responseFields(
+					fieldWithPath("id").description("identifier of new event"),
+					fieldWithPath("name").description("Name of new event"),
+					fieldWithPath("description").description("Description of new event"),
+					fieldWithPath("beginEnrollmentDateTime").description("BeginEnrollmentDateTime of new event"),
+					fieldWithPath("closeEnrollmentDateTime").description("CloseEnrollmentDateTime of new event"),
+					fieldWithPath("beginEventDateTime").description("BeginEventDateTime of new event"),
+					fieldWithPath("endEventDateTime").description("EndEventDateTime of new event"),
+					fieldWithPath("location").description("Location of new event"),
+					fieldWithPath("basePrice").description("Base Price of new event"),
+					fieldWithPath("maxPrice").description("Max Price of new event"),
+					fieldWithPath("limitOfEnrollment").description("Limit of Enrollment of new event"),
+					fieldWithPath("free").description("it tells if this event is free or not"),
+					fieldWithPath("offline").description("it tells if this event is offline or not"),
+					fieldWithPath("eventStatus").description("event status"),
+					fieldWithPath("_links.self.href").description("link to self"),
+					fieldWithPath("_links.query-events.href").description("link to query events"),
+					fieldWithPath("_links.update-event.href").description("link to update event"),
+					fieldWithPath("_links.profile.href").description("link to profile")
+				)
+			));
 	}
 
 	@DisplayName("EventDto 형태가 아닌 request 일때 bad request")
