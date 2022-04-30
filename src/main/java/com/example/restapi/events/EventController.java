@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.restapi.common.ErrorsResource;
+
 @Controller
 @RequestMapping(value = "/api/events", produces = MediaTypes.HAL_JSON_VALUE)
 public class EventController {
@@ -35,13 +37,12 @@ public class EventController {
 	@PostMapping
 	public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
 		if (errors.hasErrors()) {
-			return ResponseEntity.badRequest().body(errors);
+			return badRequest(errors);
 		}
 
 		eventValidator.validate(eventDto, errors);
-
 		if (errors.hasErrors()) {
-			return ResponseEntity.badRequest().body(errors);
+			return badRequest(errors);
 		}
 
 		Event event = modelMapper.map(eventDto, Event.class);
@@ -58,5 +59,9 @@ public class EventController {
 
 
 		return ResponseEntity.created(createdUri).body(eventResource);
+	}
+
+	private ResponseEntity<ErrorsResource> badRequest(Errors errors) {
+		return ResponseEntity.badRequest().body(new ErrorsResource(errors));
 	}
 }

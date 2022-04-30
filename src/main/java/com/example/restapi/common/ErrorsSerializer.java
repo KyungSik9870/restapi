@@ -1,4 +1,4 @@
-package com.example.restapi.commons;
+package com.example.restapi.common;
 
 import java.io.IOException;
 
@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 public class ErrorsSerializer extends JsonSerializer<Errors> {
 	@Override
 	public void serialize(Errors errors, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+		gen.writeFieldName("errors");
 		gen.writeStartArray();
 		errors.getFieldErrors().forEach(
 			e -> {
