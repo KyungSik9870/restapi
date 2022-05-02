@@ -57,7 +57,6 @@ public class EventController {
 		eventResource.add(selfLinkBuilder.withRel("update-event"));
 		eventResource.add(Link.of("/docs/index.html#resources-events-created").withRel("profile"));
 
-
 		return ResponseEntity.created(createdUri).body(eventResource);
 	}
 

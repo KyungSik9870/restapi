@@ -18,7 +18,7 @@ class EventTest {
 	}
 
 	@ParameterizedTest
-	@CsvSource(value = {"0:0:true", "100:0:false"}, delimiter = ':')
+	@CsvSource(value = {"0:0:true", "100:0:false" }, delimiter = ':')
 	void testFree(int basePrice, int maxPrice, boolean isFree) {
 		// given
 		Event event = Event.builder()
@@ -34,7 +34,7 @@ class EventTest {
 	}
 
 	@ParameterizedTest
-	@CsvSource(value = {"location:true", "'':false"}, delimiter = ':')
+	@CsvSource(value = {"location:true", "'':false" }, delimiter = ':')
 	void testOffLine(String location, boolean isOffLine) {
 		// given
 		Event event = Event.builder()
